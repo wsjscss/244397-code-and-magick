@@ -1,10 +1,16 @@
+/**
+ * Ф-ция получает данные, проверяет их тип и позвращает сообщение
+ * @param {неопределенно} a - первое значение
+ * @param {неопределенно} b - второе хначение
+ */
+
 function getMessage(a, b){
-  
-  // Если первый аргумент, a, имеет тип boolean
-  /*  жаль что a возвращает false и в результате пишет "Я никуда не попал"
-  хотя я попадаю в дерево и b возвращает "крона дерева"  */
+
+  /**
+   * Если первый аргумент, a, имеет тип boolean
+   */
   if (typeof a === 'boolean') {
-    if (a === true) {                         //Если он true
+    if (a) {                                  //Если он true
       return 'Я попал в ' + b;
     } else {                                  //Если он false
       return 'Я никуда не попал';
@@ -12,28 +18,44 @@ function getMessage(a, b){
   }
 
 
-  //Если первый аргумент имеет числовой тип
+  /**
+   * Если первый аргумент имеет числовой тип
+   */
   if (typeof a === 'number'){
     return 'Я прыгнул на ' + a * 100 + ' сантиметров';
   }
 
 
-  // Если первый аргумент массив
-  if (typeof a === 'object' && typeof b !== 'object'){
-    var numberOfSteps = a.reduce(add, 0);
+  /**
+   * Если первый аргумент массив
+   */
+  if (Array.isArray(a) && !Array.isArray(b)){
+    var numberOfSteps = summArrays(a);
     return 'Я прошёл '+ numberOfSteps +' шагов';
   }
 
 
-  // Если оба аргумента массивы
-  if (typeof a === 'object' && typeof b === 'object') {
-    var distancePath = a.reduce(add, 0) + b.reduce(add, 0);
+  /**
+   * Если оба аргумента массивы
+   */
+  if (Array.isArray(a) && Array.isArray(b)) {
+    var distancePath = summArrays(a) + summArrays(b)
     return 'Я прошёл '+ distancePath +' метров'
   }
 
 
-  //Вспомогательная ф-ция для суммы чисел в массиве
-  function add(c,d) {
-    return c + d
+  /**
+   * Calculate sum of all array elements
+   * @param {Array} - arr
+   * @return sum of all Array elements
+   */
+  function summArrays(arr) {
+    var result = 0
+
+    arr.forEach(function (a) {
+      result += a
+    })
+
+    return result
   };
 };
