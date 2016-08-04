@@ -29,24 +29,12 @@ function getMessage(a, b){
   }
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    var distancePath = calculatePath(a, b);
-    
+    var distancePath = 0;
+
+    for (var i = 0; i < a.length; i++) {
+      distancePath = distancePath + a[i] * b[i];
+    }
+
     return 'Я прошёл ' + distancePath + ' метров';
   }
-}
-
-/**
-* Попарно перемножаем значения из 2 массивов и складываем полученные результаты
-* @param {Array} - arr
-* @param {Array} - arr
-* @return {Number}
-*/
-function calculatePath(a, b) {
-  var result = 0;
-
-  for (var i = 0; i < a.length; i++) {
-    result = result + a[i] * b[i];
-  }
-
-  return result;
 }
