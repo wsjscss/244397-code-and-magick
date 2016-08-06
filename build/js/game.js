@@ -397,20 +397,100 @@ window.Game = (function() {
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          // console.log('you have won!');
+          this.createCanvasMessage('Я победил! Нажми на Spacebar (такая большая длинная кнопка), что бы начать сначала');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          // console.log('you have failed!');
+          this.createCanvasMessage('Чё-то я не нашёл куда надо нажать и что сделать что бы получить FAILED');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          // console.log('game is on pause!');
+          this.createCanvasMessage('Ты куда? А ну вернись! Вернись я сказал!!! Сядь и продолжай играть... Я серьёзно!!!');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          // console.log('welcome to the game! Press Space to start');
+          this.createCanvasMessage('Я умею летать и ходить на стрелки. А на Shift, я выстрелю файрболом. Нажми пробел что бы начать');
           break;
       }
     },
 
+    /**
+     * Отрисовка канваса для экрана паузы
+     * Вставка сообщения внутрь белого облака
+     */
+    createCanvasMessage: function (text) {
+      var canvas = document.querySelector('canvas');
+      var maxWidth = canvas.width;
+      var txt = text;
+      var ctx = this.ctx = canvas.getContext('2d');
+
+      // Рисуем 2 одинаковых объекта в котором будет текст сообщения
+      // Второй объект (тень первого) будет смещён на 10рх вправо и вниз
+      for (var i = 0; i < 2; i++) {
+        var offset = 10 * i;
+
+        if (i === 0) {
+          ctx.fillStyle = 'rgba(0, 0, 0, .5)';
+        } else {
+          ctx.fillStyle = '#fff';
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(317 - offset, 117 - offset);
+        ctx.bezierCurveTo(313 - offset, 59 - offset, 380 - offset, 37 - offset, 407 - offset, 62 - offset);
+        ctx.bezierCurveTo(419 - offset, 17 - offset, 503 - offset, 8 - offset, 519 - offset, 61 - offset);
+        ctx.bezierCurveTo(556 - offset, 28 - offset, 617 - offset, 69 - offset, 615 - offset, 104 - offset);
+        ctx.bezierCurveTo(646 - offset, 103 - offset, 649 - offset, 156 - offset, 606 - offset, 157 - offset);
+        ctx.bezierCurveTo(605 - offset, 181 - offset, 564 - offset, 193 - offset, 547 - offset, 179 - offset);
+        ctx.bezierCurveTo(529 - offset, 204 - offset, 496 - offset, 205 - offset, 480 - offset, 188 - offset);
+        ctx.bezierCurveTo(453 - offset, 218 - offset, 411 - offset, 212 - offset, 390 - offset, 187 - offset);
+        ctx.bezierCurveTo(372 - offset, 200 - offset, 338 - offset, 195 - offset, 332 - offset, 168 - offset);
+        ctx.bezierCurveTo(276 - offset, 184 - offset, 279 - offset, 116 - offset, 315 - offset, 116 - offset);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Отрисовываем текст
+      this.splitDrawText(ctx, txt, 235, 350, 80, 20);
+    },
+
+    /**
+    * Задаем стили для текста
+    * Получаем текст, преобразуем его в массив
+    * Поочереди складываем слова из массива и проверяем их ширину
+    * Если ширина полученного текста больше максимальной ширины (maxWidth)
+    * спускаемся на строку ниже и повторяем
+    * @param {HTMLElement} ctx
+    * @param {text} txt
+    * @param {number} maxWidth
+    * @param {number} left
+    * @param {number} top
+    * @param {number} lineHeight
+    */
+    splitDrawText: function (ctx, txt, maxWidth, left, top, lineHeight) {
+      var textArr = txt.split(' ');
+      var line = '';
+      ctx.fillStyle = '#000';
+      ctx.fillStroke = '#000';
+      ctx.font = '16px PT Mono';
+
+      for (var i = 0; i < textArr.length; i++) {
+        var testLine = line + textArr[i] + " ";
+        var testLineWidth = ctx.measureText(testLine).width;
+
+        if (testLineWidth > maxWidth) {
+          ctx.fillText(line, left, top);
+          line = textArr[i] + " ";
+          top += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+
+      ctx.fillText(line, left, top);
+    },
+    
     /**
      * Предзагрузка необходимых изображений для уровня.
      * @param {function} callback
