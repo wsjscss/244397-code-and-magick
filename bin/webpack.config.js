@@ -17,10 +17,10 @@ module.exports = {
 
   devtool: 'sourcemap',
 
-  entry: path.resolve(projectRoot, SRC_DIRNAME, 'main.js'),
+  entry: path.resolve(projectRoot, SRC_DIRNAME, 'js/main.js'),
 
   output: {
-    filename: "main.js",
+    filename: "js/main.js",
     path: path.resolve(projectRoot, OUTPUT_DIRNAME, 'js'),
     outputPath: '/',
     sourceMapFilename: "[file].map"
