@@ -30,7 +30,7 @@ var getData = function(url, callback) {
    */
   window.jspCallack = function(data) {
     reviews = data;
-    callback(data);
+    callback(reviews);
   };
 
   var sc = document.createElement('script');
@@ -60,25 +60,25 @@ function draw(data) {
  */
 function drawElemOnStage(data, cont) {
   var element = reviewClone.cloneNode(true);
-  element.querySelector('.review-rating').style.width = data.rating * 40  + 'px'
-  element.querySelector('.review-rating').style.maxWidth = '200px'
+  element.querySelector('.review-rating').style.width = data.rating * 40 + 'px';
+  element.querySelector('.review-rating').style.maxWidth = '200px';
   element.querySelector('.review-text').textContent = data.text;
 
-  var img = new Image(124,124);
+  var img = new Image(124, 124);
 
-  img.onload = function () {
-    element.querySelector('.review-author').src = data.authorImg
-  }
+  img.onload = function() {
+    element.querySelector('.review-author').src = data.authorImg;
+  };
 
-  img.onerror = function () {
-    element.querySelector('.review-author').classList.add('review-load-failure')
-  }
+  img.onerror = function() {
+    element.querySelector('.review-author').classList.add('review-load-failure');
+  };
 
   img.src = data.authorImg;
 
-  cont.appendChild(element)
+  cont.appendChild(element);
 
   reviewsFilter.classList.remove('invisible');
 
-  return element
+  return element;
 }
