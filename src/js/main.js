@@ -3,6 +3,7 @@
 require('./check');
 require('./form');
 require('./game');
+require('./reviews');
 
 
 (function() {
@@ -13,16 +14,16 @@ require('./game');
   var formOpenButton = document.querySelector('.reviews-controls-new');
 
 /* @param {MouseEvent} evt */
- formOpenButton.onclick = function(evt) {
- evt.preventDefault();
+  formOpenButton.onclick = function(evt) {
+    evt.preventDefault();
 
- window.form.open(function() {
- game.setGameStatus(window.Game.Verdict.PAUSE);
- game.setDeactivated(true);
- });
- };
+    window.form.open(function() {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+      game.setDeactivated(true);
+    });
+  };
 
- window.form.onClose = function() {
- game.setDeactivated(false);
- };
- })();
+  window.form.onClose = function() {
+    game.setDeactivated(false);
+  };
+})();
