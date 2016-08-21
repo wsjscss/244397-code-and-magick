@@ -1,8 +1,10 @@
 'use strict';
+var browserCookies = require('browser-cookies');
 
 window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
+  var formMain = document.querySelector('.review-form');
   var nameField = document.querySelector('#review-name');
   var nameFieldCorrect = false;
   var textField = document.querySelector('#review-text');
@@ -13,6 +15,21 @@ window.form = (function() {
   var reviewText = document.querySelector('.review-fields-text');
   var reviewFields = document.querySelector('.review-fields');
   var submitBtn = document.querySelector('.review-submit');
+
+  /**
+  * Проверяем если есть куки
+  * Данные для поля Имя и клоичества звёзд берём из куки и подставляем в форму
+  */
+  var setDataFromCookies = function() {
+    var cookiesMark = browserCookies.get('review-mark');
+    var cookiesName = browserCookies.get('review-name');
+
+    if (cookiesName !== null) {
+      nameField.value = cookiesName;
+      document.querySelector('#review-mark-' + cookiesMark).checked = true
+    }
+  };
+
 
   /**
   * Проверяем если поле с именем и текстом комментария заполненно правильно
@@ -29,7 +46,6 @@ window.form = (function() {
   };
 
   /**
-  *
   * Проверяем если пользователь поставил меньше 3 звезд,
   * то поле для комментария делаем обязательным
   * Так же прячем или показываем ссылку на поле в самом низу формы
@@ -44,19 +60,36 @@ window.form = (function() {
     }
   };
 
+  /**
+  *
+  * Проверяем если заполненно поле Имя
+  * Минимальное кол-во символов - 3
+   */
+  var checkNameField = function() {
+    setTimeout(function() {
+      if (nameField.value.length >= 3) {
+        reviewName.style.display = 'none';
+        nameFieldCorrect = true;
+      } else {
+        reviewName.style.display = '';
+        nameFieldCorrect = false;
+      }
+
+      checkReviewFields();
+    }, 0);
+  };
+
   nameField.setAttribute('required', '');
   nameField.addEventListener('keyup', function() {
-    if (this.value.length >= 3) {
-      reviewName.style.display = 'none';
-      nameFieldCorrect = true;
-    } else {
-      reviewName.style.display = '';
-      nameFieldCorrect = false;
-    }
-
+    checkNameField();
     checkReviewFields();
   });
 
+  /**
+  *
+  * Проверяем если заполненно поле Отзыв
+  * Минимальное кол-во символов - 3
+  */
   textField.addEventListener('keyup', function() {
     if (this.value.length >= 3) {
       reviewText.style.display = 'none';
@@ -90,8 +123,9 @@ window.form = (function() {
     open: function(cb) {
       formContainer.classList.remove('invisible');
       cb();
+      checkNameField();
       checkTextFieldRequire();
-      checkReviewFields();
+      setDataFromCookies();
     },
 
     close: function() {
@@ -106,6 +140,25 @@ window.form = (function() {
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
     form.close();
+  };
+
+  /**
+  * Когда форма отправленна, сохраняем в куки значения из полей Имя + Звезды
+  * В качестве срока истечения куки выставляем количество прошедших дней с
+  * последнего дня рождения Грейс Хоппер (09 дек)
+  */
+  formMain.onsubmit = function() {
+    var today = new Date();
+    var birthday = new Date(today.getFullYear() + ', 12, 09');
+    var cookieLife = 0;
+
+    if (today < birthday) {
+      birthday = new Date((today.getFullYear() - 1) + ', 12, 09')
+      cookieLife = parseInt((today - birthday) / (1000 * 60 * 60 * 24));
+    }
+
+    browserCookies.set('review-mark', stars, {expires: cookieLife});
+    browserCookies.set('review-name', nameField.value, {expires: cookieLife});
   };
 
   return form;
