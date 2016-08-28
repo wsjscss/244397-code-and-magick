@@ -4,8 +4,12 @@ var getData = require('./get-data');
 var drawElements = require('./draw-elements');
 
 var reviewsContainer = document.querySelector('.reviews-list');
+var reviewsFilter = document.querySelector('.reviews-filter');
+reviewsFilter.classList.add('invisible');
 
 getData('data.js', draw);
+
+reviewsFilter.classList.remove('invisible');
 
 /**
  * Проходим по массиву data и для каждого объекта массива отрисовываем

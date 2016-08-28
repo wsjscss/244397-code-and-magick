@@ -1,5 +1,14 @@
 'use strict';
 
+var reviewTemplate = document.querySelector('#review-template');
+var reviewClone;
+
+if ('content' in reviewTemplate) {
+  reviewClone = reviewTemplate.content.querySelector('.review');
+} else {
+  reviewClone = reviewTemplate.querySelector('.review');
+}
+
 /**
  * Получаем объект их массива и сонтейнер
  * Создаем новый элемент на основе данных из data, ждем загрузки картинок,
@@ -8,17 +17,7 @@
  * @param {object} cont
  */
 module.exports = function(data, cont) {
-  var reviewsFilter = document.querySelector('.reviews-filter');
-  reviewsFilter.classList.add('invisible');
 
-  var reviewTemplate = document.querySelector('#review-template');
-  var reviewClone;
-
-  if ('content' in reviewTemplate) {
-    reviewClone = reviewTemplate.content.querySelector('.review');
-  } else {
-    reviewClone = reviewTemplate.querySelector('.review');
-  }
   var element = reviewClone.cloneNode(true);
   element.querySelector('.review-rating').style.width = data.rating * 40 + 'px';
   element.querySelector('.review-rating').style.maxWidth = '200px';
@@ -37,8 +36,6 @@ module.exports = function(data, cont) {
   img.src = data.authorImg;
 
   cont.appendChild(element);
-
-  reviewsFilter.classList.remove('invisible');
 
   return element;
 };
