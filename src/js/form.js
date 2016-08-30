@@ -10,7 +10,7 @@ window.form = (function() {
   var textField = document.querySelector('#review-text');
   var textFieldCorrect = false;
   var stars = document.querySelector('.review-form-group-mark input:checked').value;
-  var starLabels = document.querySelectorAll('.review-form-group-mark .review-mark-label')
+  var starLabels = document.querySelectorAll('.review-form-group-mark .review-mark-label');
   var reviewName = document.querySelector('.review-fields-name');
   var reviewText = document.querySelector('.review-fields-text');
   var reviewFields = document.querySelector('.review-fields');
@@ -26,7 +26,7 @@ window.form = (function() {
 
     if (cookiesName !== null) {
       nameField.value = cookiesName;
-      document.querySelector('#review-mark-' + cookiesMark).checked = true
+      document.querySelector('#review-mark-' + cookiesMark).checked = true;
     }
   };
 
@@ -93,7 +93,7 @@ window.form = (function() {
   textField.addEventListener('keyup', function() {
     if (this.value.length >= 3) {
       reviewText.style.display = 'none';
-      textFieldCorrect = true
+      textFieldCorrect = true;
     } else {
       reviewText.style.display = '';
       textFieldCorrect = false;
@@ -103,8 +103,8 @@ window.form = (function() {
   });
 
   for (var i = 0; i < starLabels.length; i++) {
-    starLabels[i].addEventListener('click', function () {
-      setTimeout(function () {
+    starLabels[i].addEventListener('click', function() {
+      setTimeout(function() {
         stars = document.querySelector('.review-form-group-mark input:checked').value;
 
         checkTextFieldRequire();
@@ -148,13 +148,14 @@ window.form = (function() {
   * последнего дня рождения Грейс Хоппер (09 дек)
   */
   formMain.onsubmit = function() {
+
     var today = new Date();
     var birthday = new Date(today.getFullYear() + ', 12, 09');
     var cookieLife = 0;
 
     if (today < birthday) {
-      birthday = new Date((today.getFullYear() - 1) + ', 12, 09')
-      cookieLife = parseInt((today - birthday) / (1000 * 60 * 60 * 24));
+      birthday = new Date((today.getFullYear() - 1) + ', 12, 09');
+      cookieLife = parseInt((today - birthday) / (1000 * 60 * 60 * 24), 10);
     }
 
     browserCookies.set('review-mark', stars, {expires: cookieLife});
