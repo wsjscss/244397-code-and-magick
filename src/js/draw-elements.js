@@ -1,13 +1,15 @@
 'use strict';
 
-var reviewTemplate = document.querySelector('#review-template');
-var reviewClone;
+// var Review = require('./review.js');
 
-if ('content' in reviewTemplate) {
-  reviewClone = reviewTemplate.content.querySelector('.review');
-} else {
-  reviewClone = reviewTemplate.querySelector('.review');
-}
+// var reviewTemplate = document.querySelector('#review-template');
+// var reviewClone;
+//
+// if ('content' in reviewTemplate) {
+//   reviewClone = reviewTemplate.content.querySelector('.review');
+// } else {
+//   reviewClone = reviewTemplate.querySelector('.review');
+// }
 
 /**
  * Получаем объект их массива и сонтейнер
@@ -18,24 +20,7 @@ if ('content' in reviewTemplate) {
  */
 module.exports = function(data, cont) {
 
-  var element = reviewClone.cloneNode(true);
-  element.querySelector('.review-rating').style.width = data.rating * 40 + 'px';
-  element.querySelector('.review-rating').style.maxWidth = '200px';
-  element.querySelector('.review-text').textContent = data.text;
+  // var rev = new Review(data, cont);
 
-  var img = new Image(124, 124);
-
-  img.onload = function() {
-    element.querySelector('.review-author').src = data.authorImg;
-  };
-
-  img.onerror = function() {
-    element.querySelector('.review-author').classList.add('review-load-failure');
-  };
-
-  img.src = data.authorImg;
-
-  cont.appendChild(element);
-
-  return element;
+  // return element;
 };
