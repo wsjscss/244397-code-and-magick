@@ -1,7 +1,6 @@
 'use strict';
 
 var getData = require('./get-data');
-var drawElements = require('./draw-elements');
 var Review = require('./review.js');
 
 var reviewsContainer = document.querySelector('.reviews-list');
@@ -20,6 +19,6 @@ reviewsFilter.classList.remove('invisible');
 function draw(data) {
   data.forEach(function(el) {
     // drawElements(el, reviewsContainer);
-    var rev = new Review(el, reviewsContainer);
+    var reviewElement = new Review(el, reviewsContainer);
   });
 }

@@ -34,18 +34,18 @@ module.exports = function Review(data, cont) {
 
   this.img.src = this.data.authorImg;
 
+
   /**
    * Добавляем событие клика для всех элементов .review-quiz-answer
    */
   this.quizAnswer = this.element.querySelectorAll('.review-quiz-answer');
-  this.quizAnswer.forEach(function(el) {
-    el.onclick = function() {
-      self.quizAnswer.forEach(function(e) {
-        e.classList.remove('review-quiz-answer-active');
-      });
+
+  for (var i = 0; i < this.quizAnswer.length; i++) {
+    this.quizAnswer[i].onclick = function() {
+      self.removeClassFromAllElements(self.quizAnswer, 'review-quiz-answer-active');
       this.classList.add('review-quiz-answer-active');
     };
-  });
+  }
 
   /**
    * Удаляем событие клика со всех эллементов .review-quiz-answer
@@ -55,6 +55,18 @@ module.exports = function Review(data, cont) {
       el.onclick = null;
     });
   };
+
+  /**
+   * Удаляем класс из всех эллементов массива
+   * @param {Array} element
+   * @param {String} classname
+   */
+  this.removeClassFromAllElements = function(el, cname) {
+    for (var j = 0; j < el.length; j++) {
+      el[j].classList.remove(cname);
+    }
+  };
+
 
   cont.appendChild(this.element);
 };

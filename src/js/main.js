@@ -36,14 +36,26 @@ require('./gallery');
   var galleryImages = document.querySelectorAll('.photogallery-image');
   var galleryImagesSrc = [];
 
-  galleryImages.forEach(function(el, i) {
-    galleryImagesSrc.push( el.querySelector('img').src );
-    el.setAttribute('href', 'javascript:void(0)');
+  for (var i = 0; i < galleryImages.length; i++) {
+    var imageElement = galleryImages[i];
 
-    el.onclick = function() {
+    galleryImagesSrc.push( imageElement.querySelector('img').src );
+    imageElement.setAttribute('href', 'javascript:void(0)');
+
+    imageElement.onclick = function() {
       var gallery = new Gallery(galleryImagesSrc);
       gallery.show(i);
     };
-  });
+  }
+
+  // galleryImages.forEach(function(el, i) {
+  //   galleryImagesSrc.push( el.querySelector('img').src );
+  //   el.setAttribute('href', 'javascript:void(0)');
+  //
+  //   el.onclick = function() {
+  //     var gallery = new Gallery(galleryImagesSrc);
+  //     gallery.show(i);
+  //   };
+  // });
 
 })();

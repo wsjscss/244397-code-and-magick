@@ -24,7 +24,7 @@ window.form = (function() {
     var cookiesMark = browserCookies.get('review-mark');
     var cookiesName = browserCookies.get('review-name');
 
-    if (cookiesName !== null) {
+    if (cookiesName) {
       nameField.value = cookiesName;
       document.querySelector('#review-mark-' + cookiesMark).checked = true;
     }
