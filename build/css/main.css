@@ -581,3 +581,16 @@ input[type=radio]:checked + .review-mark-label {
   font-size: 14px;
   color: #ffffff;
 }
+
+
+
+
+/* AUTHOR NAME */
+.review-author-name{
+  font-size: 25px;
+}
+
+.review-load-failure{
+  background: url(../img/wizard-reversed.gif) no-repeat center;
+  background-color: rgba(255, 255, 255, .5);
+}

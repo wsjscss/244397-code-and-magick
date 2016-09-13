@@ -10,7 +10,6 @@ if ('content' in reviewTemplate) {
 }
 
 module.exports = function Review(data, cont) {
-  // console.log('Review start');
 
   var self = this;
 
@@ -20,19 +19,20 @@ module.exports = function Review(data, cont) {
   this.element = reviewClone.cloneNode(true);
   this.element.querySelector('.review-rating').style.width = this.data.rating * 40 + 'px';
   this.element.querySelector('.review-rating').style.maxWidth = '200px';
-  this.element.querySelector('.review-text').textContent = this.data.text;
+  this.element.querySelector('.review-text').textContent = this.data.description;
+  this.element.querySelector('.review-author-name').textContent = this.data.author.name;
 
   this.img = new Image(124, 124);
 
   this.img.onload = function() {
-    self.element.querySelector('.review-author').src = self.data.authorImg;
+    self.element.querySelector('.review-author').src = self.data.author.picture;
   };
 
   this.img.onerror = function() {
     self.element.querySelector('.review-author').classList.add('review-load-failure');
   };
 
-  this.img.src = this.data.authorImg;
+  this.img.src = this.data.author.picture;
 
   /**
    * Добавляем событие клика для всех элементов .review-quiz-answer
