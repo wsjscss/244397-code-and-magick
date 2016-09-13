@@ -13,7 +13,6 @@ var PAGE_SIZE = 3;
 var page = 0;
 var filterId = 'reviews-all';
 
-reviewsMore.classList.remove('invisible');
 
 /** @param {function(Array.<Object>)} callback
  * @param {string} url
@@ -42,15 +41,15 @@ reviewsMore.addEventListener('click', function () {
  * Удаляем все что было в контейнере с отзывами
  * Обнуляем переменную page
  */
-[].forEach.call(reviewFilterInput, function (el) {
-  el.addEventListener('click', function (evt) {
-    filterId = evt.target.getAttribute('id');
+reviewsFilter.addEventListener('change', function (evt) {
+  filterId = evt.target.getAttribute('id');
+
+  if (filterId != '') {
     reviewsContainer.innerHTML = '';
     page = 0;
     load('reviews.json', draw, filterId);
-  }, false)
-});
-
+  }
+}, true);
 
 /**
  * Проходим по массиву data и для каждого объекта массива отрисовываем
@@ -109,6 +108,8 @@ function draw(data, filterId) {
    */
   if ( to >= filteredData.length) {
     reviewsMore.classList.add('invisible');
+  } else {
+    reviewsMore.classList.remove('invisible');
   }
 
   /**
