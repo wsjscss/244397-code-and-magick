@@ -696,5 +696,58 @@ window.Game = (function() {
 
   Game.Verdict = Verdict;
 
+  var clouds = document.querySelector('.header-clouds');
+  var step = 0;
+  var startScroll = 0;
+  var cloudPos = clouds.getBoundingClientRect();
+  var cloudsHeight = clouds.offsetHeight;
+  var demo = document.querySelector('.demo');
+  var demoPos = demo.getBoundingClientRect();
+  var lastCall =  Date.now();
+  var THROTTLE_TIME = 100;
+  clouds.style.backgroundPositionX = startScroll + 'px';
+
+  window.addEventListener('scroll', changeCloudsPosition, false);
+  window.addEventListener('scroll', setGameToPause, false);
+
+  /**
+   * Функция проверяет если облака видны, то анимировать их
+   * Если облака не видны - ничего не делать
+   */
+  function changeCloudsPosition() {
+    cloudPos = clouds.getBoundingClientRect();
+
+    if (Date.now() - lastCall >= THROTTLE_TIME) {
+      if ( cloudPos.bottom < 0 ){
+        return;
+      }
+    }
+
+    var st =  window.pageYOffset;
+
+    if (st > startScroll) {
+      step -= 4;
+    } else {
+      step += 4;
+    }
+
+    clouds.style.backgroundPositionX = step + 'px';
+    startScroll = st;
+
+    lastCall = Date.now();
+
+  }
+
+
+  function setGameToPause() {
+    demoPos = demo.getBoundingClientRect();
+
+    if (demoPos.bottom < 0) {
+      Game.Verdict = Verdict.PAUSE;
+    }
+
+  }
+
+
   return Game;
 })();
