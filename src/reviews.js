@@ -11,7 +11,27 @@ var reviewsMore = document.querySelector('.reviews-controls-more');
 
 var PAGE_SIZE = 3;
 var page = 0;
-var filterId = 'reviews-all';
+
+/**
+ * Читаем ID активного фильтра из localStorage
+ * @returns {string}
+ */
+var getFilterId = function () {
+  var savedFilter = localStorage.getItem('filterId') ? localStorage.getItem('filterId') : 'reviews-all';
+  reviewsFilter.querySelector('#' + savedFilter).checked = true;
+  return savedFilter
+};
+
+/**
+ * Сохраняем ID фильтра в localStorage
+ * @param {string} filterId
+ */
+var setFilterId = function (filterId) {
+  localStorage.setItem('filterId', filterId)
+};
+
+var filterId = getFilterId();
+console.log(filterId);
 
 
 /** @param {function(Array.<Object>)} callback
@@ -40,9 +60,11 @@ reviewsMore.addEventListener('click', function () {
  * Добавляем событие клика для .reviews-filter на стадии захвата, а не всплытия
  * Удаляем все что было в контейнере с отзывами
  * Обнуляем переменную page
+ * Сохраняем ID фильтра в LocalStorage
  */
 reviewsFilter.addEventListener('change', function (evt) {
   filterId = evt.target.getAttribute('id');
+  setFilterId(filterId);
 
   if (filterId != '') {
     reviewsContainer.innerHTML = '';
