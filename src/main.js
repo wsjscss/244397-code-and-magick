@@ -36,7 +36,7 @@ require('./gallery');
   var galleryImages = document.querySelectorAll('.photogallery-image');
   var galleryImagesSrc = [];
 
-  galleryImages.forEach(function(el, i) {
+  [].forEach.call(galleryImages, function(el, i) {
     galleryImagesSrc.push( el.querySelector('img').src );
     el.setAttribute('href', 'javascript:void(0)');
 

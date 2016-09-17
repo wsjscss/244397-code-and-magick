@@ -31,8 +31,6 @@ var setFilterId = function (filterId) {
 };
 
 var filterId = getFilterId();
-console.log(filterId);
-
 
 /** @param {function(Array.<Object>)} callback
  * @param {string} url
