@@ -707,46 +707,68 @@ window.Game = (function() {
   var THROTTLE_TIME = 100;
   clouds.style.backgroundPositionX = startScroll + 'px';
 
-  window.addEventListener('scroll', changeCloudsPosition, false);
-  window.addEventListener('scroll', setGameToPause, false);
+  /**
+   * Функция, которая принимаеи в себя другую ф-цию и выполняет её через заданные отрезок времени
+   * @param {Function} callback
+   * @param {number} delay
+   * @returns {Function}
+   */
+  var throttle = function (callback, delay) {
+
+    return function () {
+      if (Date.now() - lastCall >= delay) {
+
+        callback();
+        lastCall = Date.now();
+
+      }
+    }
+
+  };
 
   /**
    * Функция проверяет если облака видны, то анимировать их
    * Если облака не видны - ничего не делать
    */
-  function changeCloudsPosition() {
+  var optimisedScroll = throttle(function () {
     cloudPos = clouds.getBoundingClientRect();
 
-    if (Date.now() - lastCall >= THROTTLE_TIME) {
-      if ( cloudPos.bottom < 0 ){
-        return;
-      }
+    if ( cloudPos.bottom < 0 ){
+      return;
     }
 
-    var st =  window.pageYOffset;
+    var scrollTopDistance =  window.pageYOffset;
 
-    if (st > startScroll) {
+    if (scrollTopDistance > startScroll) {
       step -= 4;
     } else {
       step += 4;
     }
 
     clouds.style.backgroundPositionX = step + 'px';
-    startScroll = st;
-
-    lastCall = Date.now();
-
-  }
+    startScroll = scrollTopDistance;
 
 
-  function setGameToPause() {
+  }, 10);
+
+
+  /**
+   * Проверяет если див с игрой уходит за пределы экрана и ставит игру на паузу
+   * @type {Function}
+   */
+  var setGameToPause = throttle(function () {
     demoPos = demo.getBoundingClientRect();
 
     if (demoPos.bottom < 0) {
       Game.Verdict = Verdict.PAUSE;
+      window.game.setStatus(window.Game.Verdict.PAUSE);
     }
 
-  }
+  }, 300);
+
+
+  window.addEventListener('scroll', optimisedScroll);
+  window.addEventListener('scroll', setGameToPause, false);
 
 
   return Game;
